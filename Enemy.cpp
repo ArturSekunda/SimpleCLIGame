@@ -126,7 +126,6 @@ void Enemy::AIWhileFightDecision(Player &player) {
             player.takeDamage(Damage);
             std::cout << "Enemy deal: " << Damage << " damage to you!\n";
             std::cout << "\n";
-            player.ShowPlayersStats();
             break;
         }
         case 2: {

@@ -20,6 +20,10 @@ struct S_Inventory {
 
 
     void ShowWeaponAndHisStats() const {
+        if (!weapon) {
+            std::cout << "--- EMPTY SLOT ---\n\n";
+            return;
+        }
 
         auto weaponName = weapon->weapon_name;
         auto weaponType = weapon->weapon_type;

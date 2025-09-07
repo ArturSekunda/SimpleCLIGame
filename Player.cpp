@@ -133,82 +133,77 @@ void Player::EquipItem(int index) {
 }
 
 void Player::PlayerInventory() {
-    auto table = inv.IfEmptyTable();
-    inv.ShowInventory();
-    std::cout << "\n";
-    if (table) {
+    if (inv.IfEmptyTable()) {
+        inv.ShowInventory();
+        std::cout << "\nPress any key to return...\n";
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.get();
         return;
     }
+
     do {
-        std::cout << "1. Equipt item\n2. Delete item\n3. Return\n";
+        inv.ShowInventory();
+        std::cout << "\n";
+        std::cout << "1. Equip item\n2. Delete item\n3. Return\n";
         int choice = 0;
         if (!(std::cin >> choice)) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Invalid input!\n";
+            std::cout << "Invalid input! Please enter a number.\n";
             continue;
         }
-        if (choice < 1 || choice > 3) {
-            std::cout << "Invalid choice!\n";
+
+        if (choice == 3) {
+            return;
+        }
+
+        if (choice < 1 || choice > 2) {
+            std::cout << "Invalid choice! Please enter 1, 2 or 3.\n";
             continue;
         }
+
+        int index = 0;
+        if (choice == 1) {
+            std::cout << "Enter ID of the item to equip (or -1 to cancel):\n";
+        } else { // choice == 2
+            std::cout << "Enter item ID to delete (or -1 to cancel):\n";
+        }
+
+        if (!(std::cin >> index)) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input! Please enter a number.\n";
+            continue;
+        }
+
+        if (index == -1) {
+            continue;
+        }
+
+        if (index < 0 || index >= inv.GetSizeofInv()) {
+            std::cout << "Invalid ID! There is no item with that ID.\n";
+            continue;
+        }
+
         switch (choice) {
-            case 1: {
-                std::cout << "Enter ID of the item to equip\n";
-                int index = 0;
-                if (!(std::cin >> index)) {
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout << "Invalid input!\n";
-                    continue;
-                }
-                if (index < 0 || index > inv.GetSizeofInv()) {
-                    std::cout << "Invalid ID!\n";
-                    continue;
-                }
+            case 1: { // Equip item
                 if (inv.IsItemUsed(index)) {
                     std::cout << "Item is already equipped!\n";
-                    break;
+                } else {
+                    EquipItem(index);
                 }
-
-                EquipItem(index);
                 break;
             }
-            case 2: {
-                std::cout << "Enter item ID to delete\n";
-                int index = 0;
-                std::cout << "If you want to return type: -1 \n";
-                if (!(std::cin >> index)) {
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout << "Invalid input!\n";
-                    continue;
-                }
-                if (index == -1) {
-                    break;
-                }
-                if (index < -1 || index > inv.GetSizeofInv()) {
-                    std::cout << "Invalid ID!\n";
-                    continue;
-                }
+            case 2: { // Delete item
                 if (inv.IsItemUsed(index)) {
-                    std::cout << "Item is already equipped!\n";
-                    break;
+                    std::cout << "You cannot delete an equipped item!\n";
+                } else {
+                    inv.DeleteItem(index);
                 }
-                inv.DeleteItem(index);
-                std::cout << "Item deleted!\n";
-
                 break;
             }
-            case 3:
-                return;
-            default: {
-                std::cout << "ERROR IN PLAYER INVENTORY FUNCTION!\n";
-                break;
-            }
-
         }
-    }while (true);
+    } while (true);
 }
 
 void Player::PlayerRest() {

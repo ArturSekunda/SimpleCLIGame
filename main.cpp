@@ -200,7 +200,7 @@ void Game::StartFight(Player &player) {
                     break;
                 }
 
-                std::cout << "You didn't escaped!\n";
+                std::cout << "You didn't escape!\n";
                 std::cout << "\n";
 
                 break;
@@ -213,6 +213,7 @@ void Game::StartFight(Player &player) {
         player.decreaseHealingCooldown();
         if (!player.getEscaped()) {
             enemy.AIWhileFightDecision(player);
+            player.ShowPlayersStats();
         }
 
 
