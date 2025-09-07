@@ -1,0 +1,31 @@
+# IDE - IntelliJ IDEA / CLion
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# CMake
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+*.out
+*.exe
+
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+
+*~
+*.swp
+*.tmp
